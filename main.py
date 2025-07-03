@@ -1,20 +1,20 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
-from rag_core import get_answer
+from rag_core import get_answer  # must be working
 
 app = FastAPI()
 
 class Query(BaseModel):
     question: str
 
-@app.get("/")
-def home():
-    return {"message": "RAG API working!"}
 @app.post("/query")
 def query_endpoint(q: Query):
     try:
         answer = get_answer(q.question)
         return {"answer": answer}
     except Exception as e:
-        # Return error details to help debug
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"error": str(e)}
+
+@app.get("/")
+def home():
+    return {"message": "RAG API is running"}
