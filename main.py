@@ -7,6 +7,9 @@ app = FastAPI()
 class Query(BaseModel):
     question: str
 
+@app.get("/")
+def home():
+    return {"message": "RAG API working!"}
 @app.post("/query")
 def query_endpoint(q: Query):
     try:
